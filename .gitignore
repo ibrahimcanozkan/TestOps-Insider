@@ -38,5 +38,4 @@ Thumbs.db
 *.log
 
 # Test artifacts
-screenshots/
 test-results/
