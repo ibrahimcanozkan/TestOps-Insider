@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chrome-node
+  labels:
+    app: chrome-node
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: chrome-node
+  template:
+    metadata:
+      labels:
+        app: chrome-node
+    spec:
+      containers:
+      - name: chrome-node
+        image: ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/insider-tests:chrome-node
+        ports:
+        - containerPort: 4444
+          name: selenium
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: 4444
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /status
+            port: 4444
+          initialDelaySeconds: 20
+          periodSeconds: 5
+

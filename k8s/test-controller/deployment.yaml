@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-controller
+  labels:
+    app: test-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-controller
+  template:
+    metadata:
+      labels:
+        app: test-controller
+    spec:
+      containers:
+      - name: test-controller
+        image: ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/insider-tests:controller
+        imagePullPolicy: Always
+        env:
+        - name: CHROME_NODE_URL
+          value: "http://chrome-node-service:4444/wd/hub"
+        - name: BASE_URL
+          value: "https://useinsider.com"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
